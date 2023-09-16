@@ -1,13 +1,15 @@
-// import discord.js
-import {Client, Events, GatewayIntentBits} from 'discord.js';
+import { Client, Events, GatewayIntentBits } from "discord.js";
 
-// create a new Client instance
-const client = new Client({intents: [GatewayIntentBits.Guilds]});
+import ready from "./listeners/ready";
+import interactionCreate from "./listeners/interactionCreate";
 
-// listen for the client to be ready
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
 client.once(Events.ClientReady, (c) => {
   console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-// login with the token from .env.local
+ready(client);
+interactionCreate(client);
+
 client.login(process.env.DISCORD_TOKEN);
