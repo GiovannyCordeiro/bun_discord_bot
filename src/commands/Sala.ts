@@ -1,7 +1,16 @@
-import { CommandInteraction, Client, ApplicationCommandOptionType } from "discord.js";
-import { Command } from "../Command";
+import {
+    CommandInteraction,
+    Client,
+    ApplicationCommandOptionType,
+    GuildChannelCreateOptions,
+    Message,
+    ChannelType,
+    GuildVoiceChannelResolvable
+} from "discord.js";
 
-export const Sala: Command = {
+import { Command, CommandGuild } from "../Command";
+
+export const Sala: CommandGuild = {
     name: "sala",
     description: "criar sala",
     options: [
@@ -17,7 +26,7 @@ export const Sala: Command = {
                 },
                 {
                     name: '\uD83D\uDDE3\uFE0F Conversando',
-                    value: "conversando"
+                    value: "conversando",
                 }
             ]
         },
@@ -28,10 +37,22 @@ export const Sala: Command = {
             required: true
         }
     ],
-    run: async (client: Client, interaction: CommandInteraction) => {
-        const sala = interaction.options.get('sala');
-        const qtds = interaction.options.get('qtds');
-        const content = `sala é ${sala?.value}, qtds é ${qtds?.value}`;
+    run: async (client: Client, interaction: CommandInteraction, message: Message) => {
+        const sala = interaction.options.get('sala')?.value;
+        const qtds = interaction.options.get('qtds')?.value;
+        const content = `sala é ${sala}, qtds é ${qtds}`;
+
+        const channelOptions: GuildChannelCreateOptions = {
+            name: "Testing",
+            type: ChannelType.GuildVoice,
+            userLimit: 2
+        }
+
+        // channel create 
+        const channel = await interaction.guild?.channels.create(channelOptions);
+
+        // part of code for move the user
+        // message.member?.voice.setChannel();
 
         await interaction.followUp({
             ephemeral: true,
