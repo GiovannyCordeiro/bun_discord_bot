@@ -3,14 +3,12 @@ import {
     Client,
     ApplicationCommandOptionType,
     GuildChannelCreateOptions,
-    Message,
-    ChannelType,
-    GuildVoiceChannelResolvable
+    ChannelType
 } from "discord.js";
 
-import { Command, CommandGuild } from "../Command";
+import { Command } from "../Command";
 
-export const Sala: CommandGuild = {
+export const Sala: Command = {
     name: "sala",
     description: "criar sala",
     options: [
@@ -21,7 +19,7 @@ export const Sala: CommandGuild = {
             required: true,
             choices: [
                 {
-                    name: "	\uD83D\uDCDA Estudando",
+                    name: "	📖 Estudando",
                     value: "estudando"
                 },
                 {
@@ -37,23 +35,24 @@ export const Sala: CommandGuild = {
             required: true
         }
     ],
-    run: async (client: Client, interaction: CommandInteraction, message: Message) => {
+    run: async (client: Client, interaction: CommandInteraction) => {
         const sala = interaction.options.get('sala')?.value;
         const qtds = interaction.options.get('qtds')?.value;
-        const content = `sala é ${sala}, qtds é ${qtds}`;
-
+        const categoryIdChannelVoices = "1145816560917815446";
+        if (typeof (sala) !== "string" || typeof (qtds) !== "number") {
+            return;
+        }
         const channelOptions: GuildChannelCreateOptions = {
-            name: "Testing",
             type: ChannelType.GuildVoice,
-            userLimit: 2
+            name: sala,
+            userLimit: qtds,
+            parent: categoryIdChannelVoices
         }
 
-        // channel create 
+        const memberUserName = interaction.member?.user.username;
         const channel = await interaction.guild?.channels.create(channelOptions);
 
-        // part of code for move the user
-        // message.member?.voice.setChannel();
-
+        const content = `sala é ${sala}, qtds é ${qtds}`;
         await interaction.followUp({
             ephemeral: true,
             content

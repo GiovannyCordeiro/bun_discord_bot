@@ -3,7 +3,3 @@ import { CommandInteraction, ChatInputApplicationCommandData, Client, Message } 
 export interface Command extends ChatInputApplicationCommandData {
     run: (client: Client, interaction: CommandInteraction) => void;
 }
-
-export interface CommandGuild extends ChatInputApplicationCommandData {
-    run: (client: Client, interaction: CommandInteraction, message: Message) => void;
-}
