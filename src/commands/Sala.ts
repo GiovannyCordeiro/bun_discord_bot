@@ -19,12 +19,20 @@ export const Sala: Command = {
             required: true,
             choices: [
                 {
-                    name: "	📖 Estudando",
-                    value: "estudando"
+                    name: "📖 Estudando",
+                    value: "📖 Estudando"
                 },
                 {
-                    name: '\uD83D\uDDE3\uFE0F Conversando',
-                    value: "conversando",
+                    name: "🤙🏼 Conversando",
+                    value: "🤙🏼 Conversando",
+                },
+                {
+                    name: "🎮 Jogatina",
+                    value: "🎮 Jogatina"
+                },
+                {
+                    name: "💼 Trabalho",
+                    value: "💼 Trabalho"
                 }
             ]
         },
@@ -42,6 +50,18 @@ export const Sala: Command = {
         if (typeof (sala) !== "string" || typeof (qtds) !== "number") {
             return;
         }
+        if (qtds > 99) {
+            await interaction.followUp({
+                ephemeral: true,
+                content: "> Você não pode criar uma sala com mais de 99 lugares por favor tente um número menor."
+            })
+        }
+        if (qtds <= 1) {
+            await interaction.followUp({
+                ephemeral: true,
+                content: "> Você não pode criar uma sala com 1 ou menos lugares."
+            })
+        }
         const channelOptions: GuildChannelCreateOptions = {
             type: ChannelType.GuildVoice,
             name: sala,
@@ -50,10 +70,6 @@ export const Sala: Command = {
         }
 
         await interaction.guild?.channels.create(channelOptions);
-        const content = `sala é ${sala}, qtds é ${qtds}`;
-        await interaction.followUp({
-            ephemeral: true,
-            content
-        })
+        await interaction.deleteReply();
     }
 }
