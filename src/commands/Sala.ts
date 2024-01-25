@@ -46,7 +46,7 @@ export const Sala: Command = {
     run: async (client: Client, interaction: CommandInteraction) => {
         const sala = interaction.options.get('sala')?.value;
         const qtds = interaction.options.get('qtds')?.value;
-        const categoryIdChannelVoices = "1145816560917815446";
+        const categoryIdChannelVoices = process.env.IDCATEGORY;
         if (typeof (sala) !== "string" || typeof (qtds) !== "number") {
             return;
         }
