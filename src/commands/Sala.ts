@@ -49,9 +49,7 @@ export const Sala: Command = {
             parent: categoryIdChannelVoices
         }
 
-        const memberUserName = interaction.member?.user.username;
-        const channel = await interaction.guild?.channels.create(channelOptions);
-
+        await interaction.guild?.channels.create(channelOptions);
         const content = `sala é ${sala}, qtds é ${qtds}`;
         await interaction.followUp({
             ephemeral: true,
